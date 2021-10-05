@@ -1,0 +1,132 @@
+﻿@page "/dashboard" 
+
+<ExampleLayout VM="DashboardDoc">
+    <VMContext VM="Dashboard" TState="IDashboardState" OnStateChange="UpdateState">
+        @if (state == null)
+        {
+    <div class="spinner lds-hourglass" /> }
+        else
+        {
+    <d-panel>
+
+
+        <center><h2>ALLtrainMescla5D Dashboard</h2></center>
+
+        <d-panel flex="100%" horizontal="true" wrap='true'>
+            @if (state.Download > 176)
+            {
+            <d-panel>
+                <InfoCard id="Download" Color="#d9534f"></InfoCard>
+            </d-panel>
+            }
+            else
+            {
+            <d-panel>
+                <InfoCard id="Download" Color="#5cb85c"></InfoCard>
+            </d-panel>
+            }
+
+            @if (state.Upload > 456)
+            {
+            <d-panel>
+                <InfoCard id="Upload" Color="#d9534f"></InfoCard>
+            </d-panel>
+            }
+            else
+            {
+            <d-panel>
+                <InfoCard id="Upload" Color="#5cb85c"></InfoCard>
+            </d-panel>            
+            }
+
+            @if (state.Latency > 106)
+            {
+            <d-panel>
+                <InfoCard id="Latency" Color="#d9534f"></InfoCard>
+            </d-panel>
+            }
+            else
+            {
+            <d-panel>
+                <InfoCard id="Latency" Color="#5cb85c"></InfoCard>
+            </d-panel>            
+            }
+            @if (state.Users > 46)
+            {
+            <d-panel>
+                <InfoCard id="Users" Color="#d9534f"></InfoCard>
+            </d-panel>            
+            }
+            else
+            {
+            <d-panel>
+                <InfoCard id="Users" Color="#5cb85c"></InfoCard>
+            </d-panel>             
+            }
+        </d-panel>
+
+        <d-panel horizontal="true">
+            <d-panel flex="100%">
+                <d-line-chart height="100px" id="Traffic" streaming="true" tooltip="true"/>
+            </d-panel>
+        </d-panel>
+
+        <d-panel>
+            <d-card>
+                <d-panel horizontal='true'>
+                    <d-panel flex='50%'>
+
+                        <d-bar-chart id="ServerUsage"></d-bar-chart>
+                    </d-panel>
+                    <d-panel flex='50%'>
+
+                        <d-pie-chart id='Utilization' />
+                    </d-panel>
+                </d-panel>
+            </d-card>
+        </d-panel>
+        <d-panel>
+            <d-card>
+                <d-panel horizontal='true'>
+                    <d-panel flex='100%'>
+                        <canvas id='Traffic'></canvas>
+                    </d-panel>
+
+                </d-panel>
+            </d-card>
+        </d-panel>
+
+
+    </d-panel>}
+
+    </VMContext>
+</ExampleLayout>
+
+@code {
+    private IDashboardState state;
+
+    public class Activity
+    {
+        public int Id { get; set; }
+        public string PersonName { get; set; }
+        public string Status { get; set; }
+        public int StatusId { get; set; }
+    }
+
+    public interface IDashboardState
+    {
+        Activity[] RecentActivities { get; set; }
+        int Download { get; set; }
+        int Upload { get; set; }
+        int Latency { get; set; }
+        int Users { get; set; }
+
+
+    }
+
+    private void UpdateState(IDashboardState state)
+    {
+        this.state = state;
+        StateHasChanged();
+    }
+}
